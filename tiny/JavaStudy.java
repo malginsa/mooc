@@ -59,10 +59,51 @@ public class JavaStudy
 		System.out.format("%d  %d\n", bbb, (byte)(bbb+1));
 	}
 
+	public static void PreciseOfCalculation(double theta)
+	{
+		double trig_one = Math.pow(Math.sin(theta), 2) + Math.pow(Math.cos(theta), 2);
+		System.out.println(trig_one);
+		System.out.println();
+	}
+
+	public static void Concatenation()
+	{
+		System.out.println(2 + "bc");
+		System.out.println(2 + 3 + "bc");
+		System.out.println((2+3) + "bc");
+		System.out.println("bc" + (2+3));
+		System.out.println("bc" + 2 + 3);
+
+		System.out.println('b');
+		System.out.println('b' + 'c');
+		System.out.println((char) ('a' + 4));
+
+		Integer a = Integer.MAX_VALUE;
+		System.out.println();
+		System.out.println(a);
+		System.out.println(a+1);
+		System.out.println(2-a);
+		System.out.println(-2-a);
+		System.out.println(2*a);
+		System.out.println(4*a);
+
+		double b = 3.14159;
+		System.out.println();
+		System.out.println(b);
+		System.out.println(b+1);
+		System.out.println(8/(int) b);
+		System.out.println(8/b);
+		System.out.println((int) (8/b));
+
+		System.out.println((Math.sqrt(2) * Math.sqrt(2) == 2));
+	}
+
 	public static void main(String[] args)
 	{
 //		printchars(60000, (int)mypow(2,16)-1);
 //		bitwise();
-		IntegralBoundaries();
+//		IntegralBoundaries();
+//		PreciseOfCalculation(Double.parseDouble(args[0]));
+		Concatenation();
 	}
 }

@@ -98,12 +98,33 @@ public class JavaStudy
 		System.out.println((Math.sqrt(2) * Math.sqrt(2) == 2));
 	}
 
+	public static boolean CalendarInterval(int month, int day)
+	{
+		if (month < 3 || month > 6 || day < 1 || day > 31)
+			return false;
+		boolean ret;
+		ret = (month == 3 && day >= 20);
+		ret = ret || (month == 4 && day < 31);
+		ret = ret || (month == 5);
+		ret = ret || (month == 6 && day <= 20);
+		return ret;
+	}
+
 	public static void main(String[] args)
 	{
 //		printchars(60000, (int)mypow(2,16)-1);
 //		bitwise();
 //		IntegralBoundaries();
 //		PreciseOfCalculation(Double.parseDouble(args[0]));
-		Concatenation();
+//		Concatenation();
+		TestSuite ts = new TestSuite();
+		ts.assertEQ(CalendarInterval(2,22), false, "test 1");
+		ts.assertEQ(CalendarInterval(3,12), false, "test 2");
+		ts.assertEQ(CalendarInterval(3,22), true, "test 3");
+		ts.assertEQ(CalendarInterval(4,22), true, "test 4");
+		ts.assertEQ(CalendarInterval(5,32), false, "test 5");
+		ts.assertEQ(CalendarInterval(6,20), true, "test 6");
+		ts.assertEQ(CalendarInterval(7,33), false, "test 7");
+		ts.tally();
 	}
 }

@@ -57,12 +57,24 @@ public class JavaStudy
 		byte bbb = 127;
 		System.out.format("%d  %d\n", bb, (byte)(bb-1));
 		System.out.format("%d  %d\n", bbb, (byte)(bbb+1));
+		System.out.println(Math.abs(-2147483648));
+		System.out.println(Math.round(6.022e23));
+		System.out.println(Math.round(6.022e23) + 1);
+
+		System.out.println((0.1 + 0.1 + 0.1));
+	}
+
+	public static void rand_int_interval(int a, int b)
+	{
+		double r = Math.random();
+		System.out.println(r);
 	}
 
 	public static void main(String[] args)
 	{
 //		printchars(60000, (int)mypow(2,16)-1);
 //		bitwise();
-		IntegralBoundaries();
+//		IntegralBoundaries();
+		rand_int_interval(4, 7);
 	}
 }

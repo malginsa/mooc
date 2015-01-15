@@ -126,7 +126,7 @@ public class JavaStudy
 //		printchars(60000, (int)mypow(2,16)-1);
 //		bitwise();
 //		IntegralBoundaries();
-		rand_int_interval(4, 7);
+//		rand_int_interval(4, 7);
 //		PreciseOfCalculation(Double.parseDouble(args[0]));
 //		Concatenation();
 		TestSuite ts = new TestSuite();

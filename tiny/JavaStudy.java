@@ -70,11 +70,73 @@ public class JavaStudy
 		System.out.println(r);
 	}
 
+	public static void PreciseOfCalculation(double theta)
+	{
+		double trig_one = Math.pow(Math.sin(theta), 2) + Math.pow(Math.cos(theta), 2);
+		System.out.println(trig_one);
+		System.out.println();
+	}
+
+	public static void Concatenation()
+	{
+		System.out.println(2 + "bc");
+		System.out.println(2 + 3 + "bc");
+		System.out.println((2+3) + "bc");
+		System.out.println("bc" + (2+3));
+		System.out.println("bc" + 2 + 3);
+
+		System.out.println('b');
+		System.out.println('b' + 'c');
+		System.out.println((char) ('a' + 4));
+
+		Integer a = Integer.MAX_VALUE;
+		System.out.println();
+		System.out.println(a);
+		System.out.println(a+1);
+		System.out.println(2-a);
+		System.out.println(-2-a);
+		System.out.println(2*a);
+		System.out.println(4*a);
+
+		double b = 3.14159;
+		System.out.println();
+		System.out.println(b);
+		System.out.println(b+1);
+		System.out.println(8/(int) b);
+		System.out.println(8/b);
+		System.out.println((int) (8/b));
+
+		System.out.println((Math.sqrt(2) * Math.sqrt(2) == 2));
+	}
+
+	public static boolean CalendarInterval(int month, int day)
+	{
+		if (month < 3 || month > 6 || day < 1 || day > 31)
+			return false;
+		boolean ret;
+		ret = (month == 3 && day >= 20);
+		ret = ret || (month == 4 && day < 31);
+		ret = ret || (month == 5);
+		ret = ret || (month == 6 && day <= 20);
+		return ret;
+	}
+
 	public static void main(String[] args)
 	{
 //		printchars(60000, (int)mypow(2,16)-1);
 //		bitwise();
 //		IntegralBoundaries();
 		rand_int_interval(4, 7);
+//		PreciseOfCalculation(Double.parseDouble(args[0]));
+//		Concatenation();
+		TestSuite ts = new TestSuite();
+		ts.assertEQ(CalendarInterval(2,22), false, "test 1");
+		ts.assertEQ(CalendarInterval(3,12), false, "test 2");
+		ts.assertEQ(CalendarInterval(3,22), true, "test 3");
+		ts.assertEQ(CalendarInterval(4,22), true, "test 4");
+		ts.assertEQ(CalendarInterval(5,32), false, "test 5");
+		ts.assertEQ(CalendarInterval(6,20), true, "test 6");
+		ts.assertEQ(CalendarInterval(7,33), false, "test 7");
+		ts.tally();
 	}
 }

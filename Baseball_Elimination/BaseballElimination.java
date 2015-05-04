@@ -6,6 +6,8 @@ public class BaseballElimination {
 	private final int[] losses; // number of losses of each team
 	private final int[] rem; // number of remaining games of each team
 	private final int[][] game; // number of remaining games against each team
+	private FordFulkerson ff;
+	private boolean iselimin = false; // whether team is eliminated
 
 	// crutch
 	private Queue<String> teams = new Queue<String>();
@@ -109,16 +111,18 @@ public class BaseballElimination {
 			if (i != idteam)
 				flownet.addEdge(new FlowEdge(
 					teamoffset + i, target, wins[idteam] + rem[idteam] - wins[i]));
-			
-		FordFulkerson ff = new FordFulkerson(flownet, source, target);
-
-		return (math.abs(ff.value() - avail) <= 0.1 )
+		ff = new FordFulkerson(flownet, source, target);
+		iselimin = Math.abs(ff.value() - avail) > 0.001;
+		return iselimin;
 	}
 	
 	// subset R of teams that eliminates given team; null if not eliminated
 	public Iterable<String> certificateOfElimination(String team) {
-		if (number < 2) return false;
+		if (!iselimin) return null;
 		checkTeamname(team);
+		Bag<Integer> elim = new Bag<Integer>(); // bag of team id
+		
+		
 		return null;
 	}
 

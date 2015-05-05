@@ -8,6 +8,7 @@ public class BaseballElimination {
 	private final int[][] game; // number of remaining games against each team
 	private FordFulkerson ff;
 	private boolean iselimin = false; // whether team is eliminated
+	private Bag<String> elim; // subset of teams that eliminates
 
 	// crutch
 	private Queue<String> teams = new Queue<String>();
@@ -87,6 +88,19 @@ public class BaseballElimination {
 	public boolean isEliminated(String team) {
 		if (number < 2) return false;
 		checkTeamname(team);
+		elim = new Bag<String>();
+
+		// checking trivial elimination
+		for (int i = 0; i < number; i++) { // check each team for trivial elimination
+			for (int j = 0; j < number; j++) {
+				if (i == j) continue;
+				if (wins[i] + rem[i] < wins[j])
+					elim.add(name[j]);
+			}
+			if (!elim.isEmpty()) return true;
+		}
+
+		// checking nontrivial elimination
 		int idteam = getIDteam(team); // id of checked team
 		int teamoffset = number * number; // offset for team array
 		int source = number * number + number + 1; // s-vert
@@ -100,6 +114,8 @@ public class BaseballElimination {
 				if (i >= j)
 					continue;
 				avail += game[i][j];
+//				StdOut.print(game[i][j]);
+//				StdOut.print(' ');
 				flownet.addEdge(new FlowEdge(
 					source, i * number + j, game[i][j]));
 				flownet.addEdge(new FlowEdge(
@@ -107,43 +123,46 @@ public class BaseballElimination {
 				flownet.addEdge(new FlowEdge(
 					i * number + j, teamoffset + j, Double.POSITIVE_INFINITY));
 			}
+//		StdOut.println();
 		for (int i = 0; i < number; i++)
 			if (i != idteam)
 				flownet.addEdge(new FlowEdge(
 					teamoffset + i, target, wins[idteam] + rem[idteam] - wins[i]));
 		ff = new FordFulkerson(flownet, source, target);
-		iselimin = Math.abs(ff.value() - avail) > 0.001;
-		return iselimin;
+
+		if (Math.abs(ff.value() - avail) > 0.001) {
+			for (int i = 0; i < number; i++)
+				if (ff.inCut(number * number + i))
+					elim.add(name[i]);
+			return true;
+		}
+		return false;
 	}
 	
 	// subset R of teams that eliminates given team; null if not eliminated
 	public Iterable<String> certificateOfElimination(String team) {
-		if (!iselimin) return null;
 		checkTeamname(team);
-		Bag<String> elim = new Bag<String>(); // bag of team id
-		for (int i = 0; i < number; i++)
-			if (ff.inCut(number * number + i))
-				elim.add(name[i]);
+		if (elim.isEmpty()) return null;
 		return elim;
 	}
 
 //	public static void main(String[] args) {
 //		BaseballElimination division = new BaseballElimination(args[0]);
 //	}
-//	public static void main(String[] args) {
-//		BaseballElimination division = new BaseballElimination(args[0]);
-//		for (String team : division.teams()) {
-//			if (division.isEliminated(team)) {
-//				StdOut.print(team + " is eliminated by the subset R = { ");
-//				for (String t : division.certificateOfElimination(team)) {
-//					StdOut.print(t + " ");
-//				}
-//				StdOut.println("}");
-//			}
-//			else {
-//				StdOut.println(team + " is not eliminated");
-//			}
-//		}
-//	}
+	public static void main(String[] args) {
+		BaseballElimination division = new BaseballElimination(args[0]);
+		for (String team : division.teams()) {
+			if (division.isEliminated(team)) {
+				StdOut.print(team + " is eliminated by the subset R = { ");
+				for (String t : division.certificateOfElimination(team)) {
+					StdOut.print(t + " ");
+				}
+				StdOut.println("}");
+			}
+			else {
+				StdOut.println(team + " is not eliminated");
+			}
+		}
+	}
 
 }

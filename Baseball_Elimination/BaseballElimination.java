@@ -93,8 +93,8 @@ public class BaseballElimination {
 		int target = number * number + number; // t-vert
 		double avail = 0; // flow of last hope
 		FlowNetwork flownet = new FlowNetwork(number * number + number + 2);
-		for (int i = 0; i < number; i++ )
-			for (int j = 0; j < number; j++ ) {
+		for (int i = 0; i < number; i++)
+			for (int j = 0; j < number; j++) {
 				if ((i == idteam) || (j == idteam))
 					continue;
 				if (i >= j)
@@ -107,7 +107,7 @@ public class BaseballElimination {
 				flownet.addEdge(new FlowEdge(
 					i * number + j, teamoffset + j, Double.POSITIVE_INFINITY));
 			}
-		for (int i = 0; i < number; i++ )
+		for (int i = 0; i < number; i++)
 			if (i != idteam)
 				flownet.addEdge(new FlowEdge(
 					teamoffset + i, target, wins[idteam] + rem[idteam] - wins[i]));
@@ -120,15 +120,16 @@ public class BaseballElimination {
 	public Iterable<String> certificateOfElimination(String team) {
 		if (!iselimin) return null;
 		checkTeamname(team);
-		Bag<Integer> elim = new Bag<Integer>(); // bag of team id
-		
-		
-		return null;
+		Bag<String> elim = new Bag<String>(); // bag of team id
+		for (int i = 0; i < number; i++)
+			if (ff.inCut(number * number + i))
+				elim.add(name[i]);
+		return elim;
 	}
 
-	public static void main(String[] args) {
-		BaseballElimination division = new BaseballElimination(args[0]);
-	}
+//	public static void main(String[] args) {
+//		BaseballElimination division = new BaseballElimination(args[0]);
+//	}
 //	public static void main(String[] args) {
 //		BaseballElimination division = new BaseballElimination(args[0]);
 //		for (String team : division.teams()) {

@@ -1,6 +1,11 @@
 public class JavaStudy
 {
 
+	// DFS
+	private Graph graph;
+	private boolean[] visited;
+	Stack<Integer> stack;
+
 	public static int mypow (int base, int exp)
 	{
 		if (exp < 0) throw new java.lang.IllegalArgumentException();
@@ -121,6 +126,53 @@ public class JavaStudy
 		return ret;
 	}
 
+	private void dfs_stack(int v)
+	{
+		visited[ v ] = true;
+		stack.push( v );
+		while (!stack.isEmpty())
+		{
+			int t = stack.peek();
+			int next = -1;
+			for ( int neib : graph.adj(t) )	// pick up unvisited neib
+				if (!visited[ neib ])
+					{
+						next = neib;
+						break;
+					}
+			if ( next == -1 ) 
+				StdOut.print( stack.pop() + " " );	//StdOut.println( stack ); stack.pop();
+			else
+			{
+				stack.push( next );
+				visited[ next ] = true;
+			}
+		}
+	}
+
+	private void dfs(int v)
+	{
+		visited[ v ] = true;
+		for ( int neib : graph.adj(v) )
+			if (!visited[ neib ])
+				dfs( neib );
+		StdOut.print(v + " ");
+	}
+
+	private void DFS()
+	{
+//		StdOut.print( "recursive dfs: " );
+//		clear_visited();
+//		dfs( v );
+//		StdOut.println();
+//
+//		StdOut.print( "    stack dfs: " );
+//		stack = new Stack<Integer>();
+//		clear_visited();
+//		dfs_stack( v );
+//		StdOut.println();
+	}
+
 	public static void main(String[] args)
 	{
 //		printchars(60000, (int)mypow(2,16)-1);
@@ -138,5 +190,10 @@ public class JavaStudy
 		ts.assertEQ(CalendarInterval(6,20), true, "test 6");
 		ts.assertEQ(CalendarInterval(7,33), false, "test 7");
 		ts.tally();
+
+		char c = "abcdefg".charAt(5);
+		int[] arr = new int[7];
+		for( int i = 0; i < 7; i++) arr[i] = i;
+		StdOut.println(arr[c-'a']);
 	}
 }

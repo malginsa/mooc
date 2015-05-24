@@ -173,6 +173,17 @@ public class JavaStudy
 //		StdOut.println();
 	}
 
+	private static void chars_id()
+	{
+		int[] id = new int [(int)'Z' + 1];
+		for (int i = (int)'A'; i <= (int)'Z'; i++)
+			id[i] = i - (int)'A';
+		StdOut.println();
+		for (int i = (int)'A'; i <= (int)'Z'; i++)
+			StdOut.print(" "+ i +":"+ id[i] +":"+ (char)i +" ");
+		StdOut.println();
+	}
+
 	public static void main(String[] args)
 	{
 //		printchars(60000, (int)mypow(2,16)-1);
@@ -195,5 +206,6 @@ public class JavaStudy
 		int[] arr = new int[7];
 		for( int i = 0; i < 7; i++) arr[i] = i;
 		StdOut.println(arr[c-'a']);
+
 	}
 }

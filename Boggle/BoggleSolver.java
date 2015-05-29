@@ -4,7 +4,7 @@ public class BoggleSolver
 	private TST<Integer> words;	// set of all valid words founded in board
 	private Graph graph;	// graph representation of board
 	private boolean[][] visited;	// element of bord/graph visited marks
-	private StringBuilder pref;	// current prefix
+	private StringBuilder pref;	// curr_ptuefix
 	private BoggleBoard board;
 
 	// Initializes the data structure using the given array of strings
@@ -38,8 +38,12 @@ public class BoggleSolver
 		visited[ i ][ j ] = true;
 		char letter = board.getLetter(i, j);
 		pref.append(letter);
+		dict.add_char(letter);
 		if (letter == 'Q')
+		{
 			pref.append('U');
+			dict.add_char('U');
+		}
 		if (check_pref_in_dict())
 			for (int neib : graph.adj(j + i * board.cols()))
 			{
@@ -49,16 +53,20 @@ public class BoggleSolver
 						generate(neibi, neibj);
 			}
 		pref.deleteCharAt(pref.length() - 1);
+		dict.del_last_char();
 		if (pref.length() > 0)
 			if (pref.charAt(pref.length() - 1) == 'Q')
+			{
 				pref.deleteCharAt(pref.length() - 1);
+				dict.del_last_char();
+			}
 		visited[ i ][ j ] = false;
 	}
 
 	private boolean check_pref_in_dict()
 	{
-		String str = pref.toString();	// ! to optimize
-		switch (dict.pref_or_word(str))
+//		String str = pref.toString();	// ! to optimize
+		switch (dict.status())
 		{
 			case -1: 
 				return false;
@@ -66,6 +74,7 @@ public class BoggleSolver
 				return true;
 			case 1: 
 			{
+				String str = pref.toString();	// ! to optimize
 				if (str.length() > 2)
 					words.put(str, 1);
 				return true;

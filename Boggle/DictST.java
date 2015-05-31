@@ -1,4 +1,10 @@
-// Dictioanry Symbol Table is a Trie Symbol Table, adopted for dictionary of Boggle game
+// Dictioanry Symbol Table is a Trie Symbol Table, 
+// adopted for dictionary of Boggle game
+// There are only words with Q followed by U in this dictionary,
+// with U char is omitted
+
+import java.util.regex.Pattern;
+
 public class DictST
 {
 	private static final int R = 26;	// possible indexes == number of capital letter
@@ -36,36 +42,18 @@ public class DictST
 		{ curr_ptr = root; }
 
 		public void move_up_ptr() 
-		{
-			if (curr_ptr == null)
-				throw new java.lang.NullPointerException();
-			curr_ptr = curr_ptr.parent;
-!!!!!!			if (curr_ptr.parent)
-		}
+		{	curr_ptr = curr_ptr.parent;	}
 
 		public void move_down_ptr(char ch)
-		{
-			if (curr_ptr == null)
-				throw new java.lang.NullPointerException();
-			curr_ptr = curr_ptr.next[id[ch]];
-			if (ch == 'Q')
-				curr_ptr = curr_ptr.next[id['U']];
-		}
+		{	curr_ptr = curr_ptr.next[id[ch]];	}
 
 		public boolean contains_pref(char ch)
-		{ 
-			if (curr_ptr == null)
-				return false;
-			if (curr_ptr.next[id[ch]] == null)
-				return false;
-			// check 'Q+U' case
-			if (ch == 'Q')
-			{
-				StdOut.println( curr_ptr.next[id['Q']].next[id['U']] );
-				return curr_ptr.next[id['Q']].next[id['U']] != null;
-			}
-			return true;
+		{
+			return curr_ptr.next[id[ch]] != null;
 		}
+
+		public boolean is_word()
+		{ return curr_ptr.is_word; }
 
 		// return status of current prefix (current pointer points to)
 		// -1  key is not a pref, neither word
@@ -80,25 +68,16 @@ public class DictST
 				return 0;
 		}
 
-//		public int status(String key)
-//		{	return status(root, key, 0);	}
-//
-//		private int status(Node x, String key, int d)
-//		{
-//			if (x == null) return -1;
-//			if (d == key.length())
-//				if (x.is_word)
-//					return 1;
-//				else
-//					return 0;
-//			char ch = key.charAt(d);
-//			return status(x.next[id[ch]], key, d+1);
-//		}
+		public void put(String key)
+		{
+			if (key.matches(".*Q[^U].*")) 
+				return;
+			if (key.contains("QU")) 
+				key = key.replace("QU", "Q");
+			root = put(root, key, 0, null);
+		}
 
-    public void put(String key)
-		{ root = put(root, key, 0, null); }
-
-    private Node put(Node x, String key, int d, Node parent)
+		private Node put(Node x, String key, int d, Node parent)
 		{
         if (x == null)
 				{
@@ -146,9 +125,6 @@ public class DictST
 			for (int i = 0; i < dictionary.length; i++)
 				dict.put(dictionary[i]);
 			dict.set_up_ptr();
-
-			dict.move_down_ptr('E');
-    	StdOut.println( dict.contains_pref('Q') );
 		}
 	}
 }

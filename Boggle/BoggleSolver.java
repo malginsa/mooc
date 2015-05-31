@@ -27,6 +27,7 @@ public class BoggleSolver
 		visited = new boolean[board.rows()][board.cols()];
 		this.clearvisited();
 		pref = new StringBuilder();
+		dict.set_up_ptr();
 		for (int i = 0; i < board.rows(); i++)
 			for (int j = 0; j < board.cols(); j++)
 				generate(i, j);
@@ -35,16 +36,19 @@ public class BoggleSolver
 	
 	private void generate(int i, int j)
 	{
-		visited[ i ][ j ] = true;
 		char letter = board.getLetter(i, j);
-		pref.append(letter);
-		dict.add_char(letter);
-		if (letter == 'Q')
+		if (dict.contains_pref(letter))
 		{
-			pref.append('U');
-			dict.add_char('U');
-		}
-		if (check_pref_in_dict())
+			visited[ i ][ j ] = true;
+			pref.append(letter);
+			dict.move_down_ptr(letter);
+			if (dict.is_word())
+				if (pref.length() > 2)
+				{
+					String str = new String(pref);
+					str = str.replace("Q", "QU");
+					words.put(str, 1);
+				}
 			for (int neib : graph.adj(j + i * board.cols()))
 			{
 				int neibi = neib / board.cols();
@@ -52,36 +56,10 @@ public class BoggleSolver
 				if (!visited[ neibi ][ neibj ])
 						generate(neibi, neibj);
 			}
-		pref.deleteCharAt(pref.length() - 1);
-		dict.del_last_char();
-		if (pref.length() > 0)
-			if (pref.charAt(pref.length() - 1) == 'Q')
-			{
-				pref.deleteCharAt(pref.length() - 1);
-				dict.del_last_char();
-			}
-		visited[ i ][ j ] = false;
-	}
-
-	private boolean check_pref_in_dict()
-	{
-//		String str = pref.toString();	// ! to optimize
-		switch (dict.status())
-		{
-			case -1: 
-				return false;
-			case 0:
-				return true;
-			case 1: 
-			{
-				String str = pref.toString();	// ! to optimize
-				if (str.length() > 2)
-					words.put(str, 1);
-				return true;
-			}
-			default:
+			pref.deleteCharAt(pref.length() - 1);
+			dict.move_up_ptr();
+			visited[ i ][ j ] = false;
 		}
-		return true;
 	}
 
 	private void creategraph(int M, int N)
@@ -116,11 +94,11 @@ public class BoggleSolver
 		if (!dict.contains(word))
 			return 0;
 		int len = word.length();
-//		int qcount = 0;
-//		for (int i = 0; i < word.length(); i++)
-//			if (word.charAt(i) == 'Q')
-//				qcount++;
-//		len += qcount;
+		int qcount = 0;
+		for (int i = 0; i < word.length(); i++)
+			if (word.charAt(i) == 'Q')
+				qcount++;
+		len += qcount;
 		switch (len)
 		{
 			case 0 : return 0;
@@ -150,31 +128,31 @@ public class BoggleSolver
 		int score = 0;
 		for (String word : solver.getAllValidWords(board))
 			score += solver.scoreOf(word);
-		ts.assertEQ(score, 0, "test 1");
+		ts.assertEQ(score, 0, "test 0");
 
 		board = new BoggleBoard("boggle-testing/board-points1000.txt");
 		score = 0;
 		for (String word : solver.getAllValidWords(board))
 			score += solver.scoreOf(word);
-		ts.assertEQ(score, 1000, "test 2");
+		ts.assertEQ(score, 1000, "test 1000");
 
 		board = new BoggleBoard("boggle-testing/board-points100.txt");
 		score = 0;
 		for (String word : solver.getAllValidWords(board))
 			score += solver.scoreOf(word);
-		ts.assertEQ(score, 100, "test 3");
+		ts.assertEQ(score, 100, "test 100");
 
 		board = new BoggleBoard("boggle-testing/board-points1250.txt");
 		score = 0;
 		for (String word : solver.getAllValidWords(board))
 			score += solver.scoreOf(word);
-		ts.assertEQ(score, 1250, "test 4");
+		ts.assertEQ(score, 1250, "test 1250");
 
 		board = new BoggleBoard("boggle-testing/board-points1500.txt");
 		score = 0;
 		for (String word : solver.getAllValidWords(board))
 			score += solver.scoreOf(word);
-		ts.assertEQ(score, 1500, "test 5");
+		ts.assertEQ(score, 1500, "test 1500");
 
 		ts.tally();
 	}
@@ -185,16 +163,15 @@ public class BoggleSolver
 			unittests();
 		else
 		{
-	    In in = new In(args[0]);
+	    In in = new In("boggle-testing/dictionary-yawl.txt");
 	    String[] dictionary = in.readAllStrings();
 	    BoggleSolver solver = new BoggleSolver(dictionary);
 
-	    BoggleBoard board = new BoggleBoard(args[1]);
+	    BoggleBoard board = new BoggleBoard(args[0]);
 	    int score = 0;
 			int count = 0;
 	    for (String word : solver.getAllValidWords(board))
 	    {
-	        StdOut.println(word);
 	        score += solver.scoreOf(word);
 					count++;
 	    }

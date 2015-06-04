@@ -4,7 +4,7 @@ public class BoggleSolver
 	private TST<Integer> words;	// set of all valid words founded in board
 	private Graph graph;	// graph representation of board
 	private boolean[][] visited;	// element of bord/graph visited marks
-	private StringBuilder pref;	// curr_ptuefix
+	private StringBuilder pref;	// curr_prefix
 	private BoggleBoard board;
 
 	// Initializes the data structure using the given array of strings
@@ -95,10 +95,10 @@ public class BoggleSolver
 			return 0;
 		int len = word.length();
 		int qcount = 0;
-		for (int i = 0; i < word.length(); i++)
-			if (word.charAt(i) == 'Q')
-				qcount++;
-		len += qcount;
+//		for (int i = 0; i < word.length(); i++)
+//			if (word.charAt(i) == 'Q')
+//				qcount++;
+//		len += qcount;
 		switch (len)
 		{
 			case 0 : return 0;

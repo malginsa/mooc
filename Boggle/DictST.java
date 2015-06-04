@@ -28,7 +28,10 @@ public class DictST
 	}
 
     public boolean contains(String key)
-		{	return contains(root, key, 0); }
+		{
+			key = key.replace("QU", "Q");
+			return contains(root, key, 0);
+		}
 
 		private boolean contains(Node x, String key, int d)
 		{
@@ -70,29 +73,29 @@ public class DictST
 
 		public void put(String key)
 		{
-			if (key.matches(".*Q[^U].*")) 
-				return;
-			if (key.contains("QU")) 
-				key = key.replace("QU", "Q");
+//			if (key.matches(".*Q[^U].*")) 
+//				return;
+//			if (key.contains("QU")) 
+			key = key.replace("QU", "Q");
 			root = put(root, key, 0, null);
 		}
 
 		private Node put(Node x, String key, int d, Node parent)
 		{
-        if (x == null)
-				{
-					x = new Node();
-					x.parent = parent;
-				}
-        if (d == key.length())
-				{
-					if (!x.is_word) N++;
-					x.is_word = true;
-					return x;
-        }
-        char c = key.charAt(d);
-        x.next[ id[c] ] = put(x.next[ id[c] ], key, d+1, x);
-        return x;
+      if (x == null)
+			{
+				x = new Node();
+				x.parent = parent;
+			}
+      if (d == key.length())
+			{
+				if (!x.is_word) N++;
+				x.is_word = true;
+				return x;
+      }
+      char c = key.charAt(d);
+      x.next[ id[c] ] = put(x.next[ id[c] ], key, d+1, x);
+      return x;
     }
 
 

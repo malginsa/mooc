@@ -184,6 +184,37 @@ public class JavaStudy
 		StdOut.println();
 	}
 
+	private static String pack(String str)
+	{
+		if (!str.contains('Q'))
+			return str;
+		if (str.length() < 2)
+			return "";
+
+		int len = str.length() - 1;
+		byte[] bytes = new bytes[len];
+		ib = 0;
+		for (int i = 0; i < len; i++)
+		{
+			char ch = str.charAt(i);
+			if (ch == 'Q')
+			{
+				if (str.charAt(i + 1) == 'U')
+				{
+					bytes[ ib++ ] = 'Q';
+					i++;
+				}
+				else
+					return "";
+			}
+			else
+				bytes[ ib++ ] = (int)ch;
+		}
+		if (str.charAt(len) == 'Q')
+			return "";
+		return String(bytes, 0 , ib);
+	}
+
 	public static void main(String[] args)
 	{
 //		printchars(60000, (int)mypow(2,16)-1);
@@ -200,12 +231,19 @@ public class JavaStudy
 		ts.assertEQ(CalendarInterval(5,32), false, "test 5");
 		ts.assertEQ(CalendarInterval(6,20), true, "test 6");
 		ts.assertEQ(CalendarInterval(7,33), false, "test 7");
-		ts.tally();
 
 		char c = "abcdefg".charAt(5);
 		int[] arr = new int[7];
 		for( int i = 0; i < 7; i++) arr[i] = i;
-		StdOut.println(arr[c-'a']);
+		ts.assertEQ(arr[c-'a'], 5, "test 8");
+
+		ts.assertEQ( pack( "QUA" ), "QA", "test 8" );
+		ts.assertEQ( pack( "Q" ), "", "test 9" );
+		ts.assertEQ( pack( "TRANQ" ), "", "test 10" );
+		ts.assertEQ( pack( "QWER" ), "", "test 11" );
+
+		ts.tally();
+
 
 	}
 }

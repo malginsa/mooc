@@ -29,7 +29,7 @@ public class DictST
 
     public boolean contains(String key)
 		{
-			key = key.replace("QU", "Q");
+			key = qpack(key);
 			return contains(root, key, 0);
 		}
 
@@ -73,10 +73,7 @@ public class DictST
 
 		public void put(String key)
 		{
-//			if (key.matches(".*Q[^U].*")) 
-//				return;
-//			if (key.contains("QU")) 
-			key = key.replace("QU", "Q");
+			key = qpack(key);
 			root = put(root, key, 0, null);
 		}
 
@@ -97,6 +94,43 @@ public class DictST
       x.next[ id[c] ] = put(x.next[ id[c] ], key, d+1, x);
       return x;
     }
+
+		// replace QU -> Q 
+		private static String qpack(String str)
+		{
+			// not necessary ?
+			if (!str.contains("Q"))
+				return str;
+			int str_length = str.length();
+			if (str_length < 2)
+				return "";
+	
+			int blen = str_length - 1;
+			byte[] bytes = new byte[blen];
+			int ib = 0;
+			char ch;
+			for (int i = 0; i < blen; i++)
+			{
+				ch = str.charAt(i);
+				if (ch == 'Q')
+					if (str.charAt(i + 1) == 'U')
+					{
+						bytes[ ib++ ] = 'Q';
+						i++;
+					}
+					else
+						return "";
+				else
+					bytes[ ib++ ] = (byte)ch;
+			}
+			// process the last character of str
+			if (str.charAt(blen) == 'Q')
+				return "";
+			if (!(str.charAt(blen-1) == 'Q' && str.charAt(blen) == 'U'))
+				bytes[ ib++ ] = (byte)str.charAt( blen );
+	
+			return new String(bytes, 0 , ib);
+		}
 
 
 	private static void unittests()

@@ -184,21 +184,24 @@ public class JavaStudy
 		StdOut.println();
 	}
 
-	private static String pack(String str)
+	// replace QU -> Q 
+	private static String qpack(String str)
 	{
-		if (!str.contains('Q'))
+		// not necessary ?
+		if (!str.contains("Q"))
 			return str;
-		if (str.length() < 2)
+		int str_length = str.length();
+		if (str_length < 2)
 			return "";
 
-		int len = str.length() - 1;
-		byte[] bytes = new bytes[len];
-		ib = 0;
-		for (int i = 0; i < len; i++)
+		int blen = str_length - 1;
+		byte[] bytes = new byte[blen];
+		int ib = 0;
+		char ch;
+		for (int i = 0; i < blen; i++)
 		{
-			char ch = str.charAt(i);
+			ch = str.charAt(i);
 			if (ch == 'Q')
-			{
 				if (str.charAt(i + 1) == 'U')
 				{
 					bytes[ ib++ ] = 'Q';
@@ -206,13 +209,22 @@ public class JavaStudy
 				}
 				else
 					return "";
-			}
 			else
-				bytes[ ib++ ] = (int)ch;
+				bytes[ ib++ ] = (byte)ch;
 		}
-		if (str.charAt(len) == 'Q')
+		// process the last character of str
+		if (str.charAt(blen) == 'Q')
 			return "";
-		return String(bytes, 0 , ib);
+		if (!(str.charAt(blen-1) == 'Q' && str.charAt(blen) == 'U'))
+			bytes[ ib++ ] = (byte)str.charAt( blen );
+
+		return new String(bytes, 0 , ib);
+	}
+
+	// Replace Q -> QU
+	private static String qunpack(String str)
+	{
+		return str.replace("Q","QU");
 	}
 
 	public static void main(String[] args)
@@ -237,10 +249,14 @@ public class JavaStudy
 		for( int i = 0; i < 7; i++) arr[i] = i;
 		ts.assertEQ(arr[c-'a'], 5, "test 8");
 
-		ts.assertEQ( pack( "QUA" ), "QA", "test 8" );
-		ts.assertEQ( pack( "Q" ), "", "test 9" );
-		ts.assertEQ( pack( "TRANQ" ), "", "test 10" );
-		ts.assertEQ( pack( "QWER" ), "", "test 11" );
+		ts.assertEQ( qpack( "QUA" ), "QA", "test 8" );
+		ts.assertEQ( qpack( "Q" ), "", "test 9" );
+		ts.assertEQ( qpack( "TRANQ" ), "", "test 10" );
+		ts.assertEQ( qpack( "QWER" ), "", "test 11" );
+		ts.assertEQ( qpack( "QUALIQU" ), "QALIQ", "test 12" );
+		ts.assertEQ( qpack( "QUALI" ), "QALI", "test 13" );
+		ts.assertEQ( qpack( "NQU" ), "NQ", "test 14" );
+		ts.assertEQ( qpack( "QUQU" ), "QQ", "test 15" );
 
 		ts.tally();
 

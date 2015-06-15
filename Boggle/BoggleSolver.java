@@ -163,7 +163,8 @@ public class BoggleSolver
 			unittests();
 		else
 		{
-	    In in = new In("boggle-testing/dictionary-yawl.txt");
+//	    In in = new In("boggle-testing/dictionary-yawl.txt");
+	    In in = new In("boggle-testing/dictionary-16q.txt");
 	    String[] dictionary = in.readAllStrings();
 	    BoggleSolver solver = new BoggleSolver(dictionary);
 
@@ -172,6 +173,7 @@ public class BoggleSolver
 			int count = 0;
 	    for (String word : solver.getAllValidWords(board))
 	    {
+	    		StdOut.println(word);
 	        score += solver.scoreOf(word);
 					count++;
 	    }

@@ -146,6 +146,10 @@ public class DictST
 		dict.move_down_ptr('E');
 		dict.move_down_ptr('Q');
 		ts.assertEQ(dict.contains_pref('A'), true, "test 1");
+		ts.assertEQ(dict.contains_pref('U'), false, "test 2");
+
+		dict.set_up_ptr();
+		ts.assertEQ(dict.contains("QUA"), true, "test 3");
 
 		ts.tally();
 	}

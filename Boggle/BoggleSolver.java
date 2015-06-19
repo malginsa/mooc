@@ -43,7 +43,7 @@ public class BoggleSolver
 			pref.append(letter);
 			dict.move_down_ptr(letter);
 			if (dict.is_word())
-				if (pref.length() > 2)
+				if (pref.length() > 1)
 				{
 					String str = new String(pref);
 					str = str.replace("Q", "QU");

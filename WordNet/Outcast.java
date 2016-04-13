@@ -1,4 +1,10 @@
+import edu.princeton.cs.algs4.In;
+// import edu.princeton.cs.algs4.Digraph;
+// import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+
 // outcast detection of semantic relatedness from WordNet list
+
 public class Outcast {
 
   private final WordNet wordnet;

@@ -1,3 +1,12 @@
+import java.util.regex.Pattern;
+// import java.util.regex.Matcher;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.RedBlackBST;
+import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.DirectedCycle;
+// import edu.princeton.cs.algs4.StdIn;
+
 // WordNet is a semantic lexicon
 // WordNet groups words into sets of synonyms called synsets
 //   and describes semantic relationships between them.
@@ -16,15 +25,13 @@
 //   The first field is a synset id;
 //   subsequent fields are the id numbers of the synset's hypernyms.
 
-import java.util.regex.Pattern;
-// import java.util.regex.Matcher;
-
 public class WordNet {
   
+  private static final int INFINITYDIST = 1000;
+
   private final RedBlackBST<String, Queue<Integer>> synsetbst;
   private final Digraph digraph;
   private final String[] synsetarr;
-  private final int INFINITYDIST = 1000;
   private final SAP sap;
   
   // constructor takes the name of the two input files

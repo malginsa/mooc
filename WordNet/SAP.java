@@ -1,9 +1,15 @@
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+
 // Shortest Ancestral Path
 
 public class SAP {
 
-  private final int PROHIBITEDLEN = -6000;
-  private final int INFINITYLEN = 4000;
+  private static final int PROHIBITEDLEN = -6000;
+  private static final int INFINITYLEN = 4000;
 
   private final Digraph G;
 
